@@ -5,28 +5,26 @@
             font-size: 10rem;
         }
     </style>
+    <div id="mount-point"></div>
     <script src="../../dist/vue.js"></script>
 </header>
 
 <body>
-    <div id="app">111</div>
+    <div id="app"></div>
     <script>
-        const ins = new Vue({
-            data:{
-                arr:[
-                    {name:'hello1'},
-                    {name:'vue'}
-                ]
-            },
-            el: '#app',
-            template:`
-                <div>
-                <div v-for="(item,index) in arr">
-                    {{item.name}}--{{index}}
-                </div>
-                </div>
-            `
+        // 创建构造器
+        var Profile = Vue.extend({
+            template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+            data: function () {
+                return {
+                    firstName: 'Walter',
+                    lastName: 'White',
+                    alias: 'Heisenberg'
+                }
+            }
         })
+        // 创建 Profile 实例，并挂载到一个元素上。
+        new Profile().$mount('#mount-point')
 
 
     </script>

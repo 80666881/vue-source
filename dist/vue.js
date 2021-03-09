@@ -1221,8 +1221,8 @@
     childVal,
     vm
   ) {
-    console.log('vm',vm);
     if (!vm) {
+      console.log('vm111: ', vm);
       // in a Vue.extend merge, both should be functions
       if (!childVal) {
         return parentVal
