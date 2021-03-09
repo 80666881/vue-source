@@ -14,13 +14,14 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
 
+//platforms/web/runtime/index.js
 const mount = Vue.prototype.$mount
+
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
   el = el && query(el)
-
   /* istanbul ignore if */
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
@@ -37,6 +38,7 @@ Vue.prototype.$mount = function (
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
           template = idToTemplate(template)
+          console.log('template: ', template);
           /* istanbul ignore if */
           if (process.env.NODE_ENV !== 'production' && !template) {
             warn(
@@ -81,6 +83,7 @@ Vue.prototype.$mount = function (
   }
   return mount.call(this, el, hydrating)
 }
+
 
 /**
  * Get outerHTML of elements, taking care

@@ -1,6 +1,8 @@
 /* @flow */
 
 import config from '../config'
+console.log('config',config.isReservedTag);
+
 import VNode, { createEmptyVNode } from './vnode'
 import { createComponent } from './create-component'
 import { traverse } from '../observer/traverse'
@@ -19,13 +21,16 @@ import {
   normalizeChildren,
   simpleNormalizeChildren
 } from './helpers/index'
+import { log } from 'console'
 
 const SIMPLE_NORMALIZE = 1
 const ALWAYS_NORMALIZE = 2
+console.log('config2',config.isReservedTag);
 
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
 export function createElement (
+
   context: Component,
   tag: any,
   data: any,
@@ -33,6 +38,8 @@ export function createElement (
   normalizationType: any,
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
+  console.log('config5',config.isReservedTag);
+
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data
@@ -43,7 +50,6 @@ export function createElement (
   }
   return _createElement(context, tag, data, children, normalizationType)
 }
-
 export function _createElement (
   context: Component,
   tag?: string | Class<Component> | Function | Object,
@@ -97,6 +103,9 @@ export function _createElement (
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
     if (config.isReservedTag(tag)) {
+      console.log('config3',config.isReservedTag);
+
+      
       // platform built-in elements
       if (process.env.NODE_ENV !== 'production' && isDef(data) && isDef(data.nativeOn)) {
         warn(
@@ -110,16 +119,23 @@ export function _createElement (
       )
     } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
       // component
+      console.log('b');
+
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
+      console.log('c');
+
       // unknown or unlisted namespaced elements
       // check at runtime because it may get assigned a namespace when its
       // parent normalizes children
       vnode = new VNode(
         tag, data, children,
         undefined, undefined, context
-      )
+      )      
     }
+    console.log('vnode: ', vnode);
+
+
   } else {
     // direct component options / constructor
     vnode = createComponent(tag, data, context, children)
@@ -133,6 +149,7 @@ export function _createElement (
   } else {
     return createEmptyVNode()
   }
+
 }
 
 function applyNS (vnode, ns, force) {

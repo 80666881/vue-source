@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const camelizeRE = /-(\w)/g
+        const camelize = (str) => {
+            return str.replace(camelizeRE, (_, c) => {
+                console.log('_',_);
+                
+                console.log('c', c);
+                return c ? c.toUpperCase() : ''
+            })
+        }
+
+        let re = /a(\d)/g
+        console.log('a123'.replace(re,(a,b)=>{
+            console.log('a',a);
+            console.log('b',b);
+            return 'mm'
+        }));
+
+        let plainObj = {
+            a:1,
+            b:{
+                c:2
+            }
+        }
+        console.log(Object.prototype.toString(plainObj));
+        
+        
+
+
+        console.log("camelize('abc-dsas'): ", camelize('abc-def'));
+    </script>
+</body>
+
+</html>

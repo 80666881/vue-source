@@ -20,6 +20,7 @@ import {
   isBuiltInTag,
   isPlainObject
 } from 'shared/util'
+import { log } from 'console'
 
 /**
  * Option overwriting strategies are functions that handle
@@ -81,6 +82,7 @@ export function mergeDataOrFn (
   childVal: any,
   vm?: Component
 ): ?Function {
+  console.log('vm',vm)
   if (!vm) {
     // in a Vue.extend merge, both should be functions
     if (!childVal) {

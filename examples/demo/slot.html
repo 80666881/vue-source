@@ -1,0 +1,70 @@
+<html>
+<header>
+    <style>
+        body {
+            font-size: 10rem;
+        }
+    </style>
+    <script src="../../dist/vue.js"></script>
+</header>
+
+<body>
+    <div id="app">
+
+        <child>
+            <template v-slot:header>
+                <h1>Here might be a page title</h1>
+            </template>
+
+            <template v-slot:default>
+                <p>A paragraph for the main content.</p>
+                <p>And another one.</p>
+            </template>
+
+                        
+        </child>
+    </div>
+    <script>
+
+        // 子组件
+        const ChildComponent = Vue.component('child', {
+            template: `
+                <div>
+                    <slot name='header'>
+                        123</slot>
+                    <slot>
+                        00000
+                    </slot>
+
+                        
+
+                    {{this.data}}
+                </div>`,
+            created: function () {
+                // 这里的 data 是父组件注入进来的
+                console.log('子组件created')
+            },
+            inject: ['data']
+        })
+        var app = new Vue({
+            el: '#app',
+            // 向子组件提供数据
+            provide: {
+                data: 'test provide'
+            },
+            components: {
+                ChildComponent
+            },
+            data: {
+                a:123
+            },
+            created() {
+                console.log('父组件created');
+            },
+        })
+
+    </script>
+
+</body>
+
+</html>

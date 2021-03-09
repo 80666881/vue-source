@@ -41,8 +41,12 @@ export class Observer {
 
   constructor (value: any) {
     this.value = value
+    console.log('this.value: ', this.value);
+
     this.dep = new Dep()
     this.vmCount = 0
+    console.log('this',this);
+    
     def(value, '__ob__', this)
     if (Array.isArray(value)) {
       if (hasProto) {
@@ -76,6 +80,7 @@ export class Observer {
       observe(items[i])
     }
   }
+
 }
 
 // helpers
@@ -101,6 +106,7 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
     def(target, key, src[key])
   }
 }
+//copyAugment(value, arrayMethods, arrayKeys)
 
 /**
  * Attempt to create an observer instance for a value,
