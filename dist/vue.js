@@ -9302,12 +9302,13 @@
   var isIgnoreNewlineTag = makeMap('pre,textarea', true);
   var shouldIgnoreFirstNewline = function (tag, html) { return tag && isIgnoreNewlineTag(tag) && html[0] === '\n'; };
 
-  function decodeAttr (value, shouldDecodeNewlines) {
+  function decodeAttr(value, shouldDecodeNewlines) {
     var re = shouldDecodeNewlines ? encodedAttrWithNewLines : encodedAttr;
     return value.replace(re, function (match) { return decodingMap[match]; })
   }
 
-  function parseHTML (html, options) {
+  function parseHTML(html, options) {
+    console.log('options: ', options);
     var stack = [];
     var expectHTML = options.expectHTML;
     var isUnaryTag = options.isUnaryTag || no;
@@ -9355,6 +9356,7 @@
           if (endTagMatch) {
             var curIndex = index;
             advance(endTagMatch[0].length);
+            console.log('endTagMatch[1]', endTagMatch[1]);
             parseEndTag(endTagMatch[1], curIndex, index);
             continue
           }
@@ -9426,7 +9428,9 @@
       if (html === last) {
         options.chars && options.chars(html);
         if ( !stack.length && options.warn) {
-          options.warn(("Mal-formatted tag at end of template: \"" + html + "\""), { start: index + html.length });
+          options.warn(("Mal-formatted tag at end of template: \"" + html + "\""), {
+            start: index + html.length
+          });
         }
         break
       }
@@ -9435,12 +9439,12 @@
     // Clean up any remaining tags
     parseEndTag();
 
-    function advance (n) {
+    function advance(n) {
       index += n;
       html = html.substring(n);
     }
 
-    function parseStartTag () {
+    function parseStartTag() {
       var start = html.match(startTagOpen);
       if (start) {
         var match = {
@@ -9465,7 +9469,7 @@
       }
     }
 
-    function handleStartTag (match) {
+    function handleStartTag(match) {
       var tagName = match.tagName;
       var unarySlash = match.unarySlash;
 
@@ -9485,9 +9489,9 @@
       for (var i = 0; i < l; i++) {
         var args = match.attrs[i];
         var value = args[3] || args[4] || args[5] || '';
-        var shouldDecodeNewlines = tagName === 'a' && args[1] === 'href'
-          ? options.shouldDecodeNewlinesForHref
-          : options.shouldDecodeNewlines;
+        var shouldDecodeNewlines = tagName === 'a' && args[1] === 'href' ?
+          options.shouldDecodeNewlinesForHref :
+          options.shouldDecodeNewlines;
         attrs[i] = {
           name: args[1],
           value: decodeAttr(value, shouldDecodeNewlines)
@@ -9499,7 +9503,13 @@
       }
 
       if (!unary) {
-        stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs, start: match.start, end: match.end });
+        stack.push({
+          tag: tagName,
+          lowerCasedTag: tagName.toLowerCase(),
+          attrs: attrs,
+          start: match.start,
+          end: match.end
+        });
         lastTag = tagName;
       }
 
@@ -9508,7 +9518,7 @@
       }
     }
 
-    function parseEndTag (tagName, start, end) {
+    function parseEndTag(tagName, start, end) {
       var pos, lowerCasedTagName;
       if (start == null) { start = index; }
       if (end == null) { end = index; }
@@ -9525,7 +9535,6 @@
         // If no tag name is provided, clean shop
         pos = 0;
       }
-
       if (pos >= 0) {
         // Close all the open elements, up the stack
         for (var i = stack.length - 1; i >= pos; i--) {
@@ -9533,19 +9542,26 @@
             (i > pos || !tagName) &&
             options.warn
           ) {
+            console.log('i > pos', i > pos);
+            console.log('tagName', tagName);
+            console.log('i: ', i);
             options.warn(
-              ("tag <" + (stack[i].tag) + "> has no matching end tag."),
-              { start: stack[i].start, end: stack[i].end }
+              ("tag <" + (stack[i].tag) + "> has no matching end tag."), {
+                start: stack[i].start,
+                end: stack[i].end
+              }
             );
           }
           if (options.end) {
             options.end(stack[i].tag, start, end);
           }
         }
-
+        console.log('stack1',JSON.parse(JSON.stringify(stack)));
         // Remove the open elements from the stack
         stack.length = pos;
         lastTag = pos && stack[pos - 1].tag;
+        console.log('stack2',JSON.parse(JSON.stringify(stack)));
+
       } else if (lowerCasedTagName === 'br') {
         if (options.start) {
           options.start(tagName, [], true, start, end);
@@ -11869,6 +11885,7 @@
       optimize(ast, options);
     }
     var code = generate(ast, options);
+    console.log('code: ', code);
     return {
       ast: ast,
       render: code.render,

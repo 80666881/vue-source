@@ -9,9 +9,16 @@
  * http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
  */
 
-import { makeMap, no } from 'shared/util'
-import { isNonPhrasingTag } from 'web/compiler/util'
-import { unicodeRegExp } from 'core/util/lang'
+import {
+  makeMap,
+  no
+} from 'shared/util'
+import {
+  isNonPhrasingTag
+} from 'web/compiler/util'
+import {
+  unicodeRegExp
+} from 'core/util/lang'
 
 // Regular Expressions for parsing tags and attributes
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/
@@ -46,12 +53,13 @@ const encodedAttrWithNewLines = /&(?:lt|gt|quot|amp|#39|#10|#9);/g
 const isIgnoreNewlineTag = makeMap('pre,textarea', true)
 const shouldIgnoreFirstNewline = (tag, html) => tag && isIgnoreNewlineTag(tag) && html[0] === '\n'
 
-function decodeAttr (value, shouldDecodeNewlines) {
+function decodeAttr(value, shouldDecodeNewlines) {
   const re = shouldDecodeNewlines ? encodedAttrWithNewLines : encodedAttr
   return value.replace(re, match => decodingMap[match])
 }
 
-export function parseHTML (html, options) {
+export function parseHTML(html, options) {
+  console.log('options: ', options);
   const stack = []
   const expectHTML = options.expectHTML
   const isUnaryTag = options.isUnaryTag || no
@@ -99,6 +107,7 @@ export function parseHTML (html, options) {
         if (endTagMatch) {
           const curIndex = index
           advance(endTagMatch[0].length)
+          console.log('endTagMatch[1]', endTagMatch[1]);
           parseEndTag(endTagMatch[1], curIndex, index)
           continue
         }
@@ -170,7 +179,9 @@ export function parseHTML (html, options) {
     if (html === last) {
       options.chars && options.chars(html)
       if (process.env.NODE_ENV !== 'production' && !stack.length && options.warn) {
-        options.warn(`Mal-formatted tag at end of template: "${html}"`, { start: index + html.length })
+        options.warn(`Mal-formatted tag at end of template: "${html}"`, {
+          start: index + html.length
+        })
       }
       break
     }
@@ -179,12 +190,12 @@ export function parseHTML (html, options) {
   // Clean up any remaining tags
   parseEndTag()
 
-  function advance (n) {
+  function advance(n) {
     index += n
     html = html.substring(n)
   }
 
-  function parseStartTag () {
+  function parseStartTag() {
     const start = html.match(startTagOpen)
     if (start) {
       const match = {
@@ -209,7 +220,7 @@ export function parseHTML (html, options) {
     }
   }
 
-  function handleStartTag (match) {
+  function handleStartTag(match) {
     const tagName = match.tagName
     const unarySlash = match.unarySlash
 
@@ -229,9 +240,9 @@ export function parseHTML (html, options) {
     for (let i = 0; i < l; i++) {
       const args = match.attrs[i]
       const value = args[3] || args[4] || args[5] || ''
-      const shouldDecodeNewlines = tagName === 'a' && args[1] === 'href'
-        ? options.shouldDecodeNewlinesForHref
-        : options.shouldDecodeNewlines
+      const shouldDecodeNewlines = tagName === 'a' && args[1] === 'href' ?
+        options.shouldDecodeNewlinesForHref :
+        options.shouldDecodeNewlines
       attrs[i] = {
         name: args[1],
         value: decodeAttr(value, shouldDecodeNewlines)
@@ -243,7 +254,13 @@ export function parseHTML (html, options) {
     }
 
     if (!unary) {
-      stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs, start: match.start, end: match.end })
+      stack.push({
+        tag: tagName,
+        lowerCasedTag: tagName.toLowerCase(),
+        attrs: attrs,
+        start: match.start,
+        end: match.end
+      })
       lastTag = tagName
     }
 
@@ -252,7 +269,7 @@ export function parseHTML (html, options) {
     }
   }
 
-  function parseEndTag (tagName, start, end) {
+  function parseEndTag(tagName, start, end) {
     let pos, lowerCasedTagName
     if (start == null) start = index
     if (end == null) end = index
@@ -269,7 +286,6 @@ export function parseHTML (html, options) {
       // If no tag name is provided, clean shop
       pos = 0
     }
-
     if (pos >= 0) {
       // Close all the open elements, up the stack
       for (let i = stack.length - 1; i >= pos; i--) {
@@ -277,19 +293,26 @@ export function parseHTML (html, options) {
           (i > pos || !tagName) &&
           options.warn
         ) {
+          console.log('i > pos', i > pos);
+          console.log('tagName', tagName);
+          console.log('i: ', i);
           options.warn(
-            `tag <${stack[i].tag}> has no matching end tag.`,
-            { start: stack[i].start, end: stack[i].end }
+            `tag <${stack[i].tag}> has no matching end tag.`, {
+              start: stack[i].start,
+              end: stack[i].end
+            }
           )
         }
         if (options.end) {
           options.end(stack[i].tag, start, end)
         }
       }
-
+      console.log('stack1',JSON.parse(JSON.stringify(stack)));
       // Remove the open elements from the stack
       stack.length = pos
       lastTag = pos && stack[pos - 1].tag
+      console.log('stack2',JSON.parse(JSON.stringify(stack)));
+
     } else if (lowerCasedTagName === 'br') {
       if (options.start) {
         options.start(tagName, [], true, start, end)
