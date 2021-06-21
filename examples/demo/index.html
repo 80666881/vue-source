@@ -2,11 +2,19 @@
 <header>
     <style>
         body {
-            font-size: 10rem;
+            font-size: 4rem;
         }
     </style>
     <div id="mount-point"></div>
     <script src="../../dist/vue.js"></script>
+    <style>
+        .text{
+            color:red;
+        }
+        .btn{
+            font-size: 60px;
+        }
+    </style>
 </header>
 
 <body>
@@ -14,14 +22,25 @@
     <script>
         // 创建构造器
         var Profile = Vue.extend({
-            template: '<div><div>{{firstName}} {{lastName}}  {{alias}}</div><p>000<a>123</a></p></div>',
+            template: ` 
+                <div>
+                    <div>动态数据 firstName:  <span class='text'>{{firstName}} </span></div>
+                    <p>静态数据:  <span class='text'>000</span></p>
+                    <p>count:  <span class='text'>{{count}}</span></p>
+                    <button class='btn' @click='add'> add count</button>
+                </div>
+                `,
             data: function () {
                 return {
                     firstName: 'Walter',
-                    lastName: 'White',
-                    alias: 'Heisenberg'
+                    count: 0
                 }
-            }
+            },
+            methods: {
+                add(){
+                    this.count+=1
+                }
+            },
         })
         // 创建 Profile 实例，并挂载到一个元素上。
         new Profile().$mount('#mount-point')
