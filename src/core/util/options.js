@@ -83,7 +83,7 @@ export function mergeDataOrFn (
   vm?: Component
 ): ?Function {
   if (!vm) {
-    console.log('vm111: ', vm);
+    // console.log('vm111: ', vm);
     // in a Vue.extend merge, both should be functions
     if (!childVal) {
       return parentVal

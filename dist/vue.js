@@ -921,7 +921,6 @@
    */
   var Observer = function Observer (value) {
     this.value = value;
-    console.log('this.value: ', this.value);
 
     this.dep = new Dep();
     this.vmCount = 0;
@@ -1222,7 +1221,7 @@
     vm
   ) {
     if (!vm) {
-      console.log('vm111: ', vm);
+      // console.log('vm111: ', vm);
       // in a Vue.extend merge, both should be functions
       if (!childVal) {
         return parentVal
@@ -3335,11 +3334,10 @@
   }
 
   /*  */
-  console.log('config',config.isReservedTag);
 
   var SIMPLE_NORMALIZE = 1;
   var ALWAYS_NORMALIZE = 2;
-  console.log('config2',config.isReservedTag);
+  // console.log('config2',config.isReservedTag);
 
   // wrapper function for providing a more flexible interface
   // without getting yelled at by flow
@@ -3352,7 +3350,7 @@
     normalizationType,
     alwaysNormalize
   ) {
-    console.log('config5',config.isReservedTag);
+    // console.log('config5',config.isReservedTag);
 
     if (Array.isArray(data) || isPrimitive(data)) {
       normalizationType = children;
@@ -3417,7 +3415,7 @@
       var Ctor;
       ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
       if (config.isReservedTag(tag)) {
-        console.log('config3',config.isReservedTag);
+        // console.log('config3',config.isReservedTag);
 
         
         // platform built-in elements
@@ -3433,11 +3431,9 @@
         );
       } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
         // component
-        console.log('b');
 
         vnode = createComponent(Ctor, data, context, children, tag);
       } else {
-        console.log('c');
 
         // unknown or unlisted namespaced elements
         // check at runtime because it may get assigned a namespace when its
@@ -3447,7 +3443,7 @@
           undefined, undefined, context
         );      
       }
-      console.log('vnode: ', vnode);
+      // console.log('vnode: ', vnode);
 
 
     } else {
@@ -9308,7 +9304,7 @@
   }
 
   function parseHTML(html, options) {
-    console.log('options: ', options);
+    // console.log('options: ', options);
     var stack = [];
     var expectHTML = options.expectHTML;
     var isUnaryTag = options.isUnaryTag || no;
@@ -9356,7 +9352,6 @@
           if (endTagMatch) {
             var curIndex = index;
             advance(endTagMatch[0].length);
-            console.log('endTagMatch[1]', endTagMatch[1]);
             parseEndTag(endTagMatch[1], curIndex, index);
             continue
           }
@@ -9556,11 +9551,11 @@
             options.end(stack[i].tag, start, end);
           }
         }
-        console.log('stack1',JSON.parse(JSON.stringify(stack)));
+        // console.log('stack1',JSON.parse(JSON.stringify(stack)));
         // Remove the open elements from the stack
         stack.length = pos;
         lastTag = pos && stack[pos - 1].tag;
-        console.log('stack2',JSON.parse(JSON.stringify(stack)));
+        // console.log('stack2',JSON.parse(JSON.stringify(stack)));
 
       } else if (lowerCasedTagName === 'br') {
         if (options.start) {
@@ -11885,7 +11880,7 @@
       optimize(ast, options);
     }
     var code = generate(ast, options);
-    console.log('code: ', code);
+    // console.log('code: ', code);
     return {
       ast: ast,
       render: code.render,

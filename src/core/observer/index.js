@@ -41,7 +41,6 @@ export class Observer {
 
   constructor (value: any) {
     this.value = value
-    console.log('this.value: ', this.value);
 
     this.dep = new Dep()
     this.vmCount = 0

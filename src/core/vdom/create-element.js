@@ -1,7 +1,7 @@
 /* @flow */
 
 import config from '../config'
-console.log('config',config.isReservedTag);
+// console.log('config',config.isReservedTag);
 
 import VNode, { createEmptyVNode } from './vnode'
 import { createComponent } from './create-component'
@@ -25,7 +25,7 @@ import { log } from 'console'
 
 const SIMPLE_NORMALIZE = 1
 const ALWAYS_NORMALIZE = 2
-console.log('config2',config.isReservedTag);
+// console.log('config2',config.isReservedTag);
 
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
@@ -38,7 +38,7 @@ export function createElement (
   normalizationType: any,
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
-  console.log('config5',config.isReservedTag);
+  // console.log('config5',config.isReservedTag);
 
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
@@ -103,7 +103,7 @@ export function _createElement (
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
     if (config.isReservedTag(tag)) {
-      console.log('config3',config.isReservedTag);
+      // console.log('config3',config.isReservedTag);
 
       
       // platform built-in elements
@@ -119,11 +119,9 @@ export function _createElement (
       )
     } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
       // component
-      console.log('b');
 
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
-      console.log('c');
 
       // unknown or unlisted namespaced elements
       // check at runtime because it may get assigned a namespace when its
@@ -133,7 +131,7 @@ export function _createElement (
         undefined, undefined, context
       )      
     }
-    console.log('vnode: ', vnode);
+    // console.log('vnode: ', vnode);
 
 
   } else {

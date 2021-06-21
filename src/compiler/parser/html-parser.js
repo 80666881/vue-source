@@ -59,7 +59,7 @@ function decodeAttr(value, shouldDecodeNewlines) {
 }
 
 export function parseHTML(html, options) {
-  console.log('options: ', options);
+  // console.log('options: ', options);
   const stack = []
   const expectHTML = options.expectHTML
   const isUnaryTag = options.isUnaryTag || no
@@ -107,7 +107,6 @@ export function parseHTML(html, options) {
         if (endTagMatch) {
           const curIndex = index
           advance(endTagMatch[0].length)
-          console.log('endTagMatch[1]', endTagMatch[1]);
           parseEndTag(endTagMatch[1], curIndex, index)
           continue
         }
@@ -307,11 +306,11 @@ export function parseHTML(html, options) {
           options.end(stack[i].tag, start, end)
         }
       }
-      console.log('stack1',JSON.parse(JSON.stringify(stack)));
+      // console.log('stack1',JSON.parse(JSON.stringify(stack)));
       // Remove the open elements from the stack
       stack.length = pos
       lastTag = pos && stack[pos - 1].tag
-      console.log('stack2',JSON.parse(JSON.stringify(stack)));
+      // console.log('stack2',JSON.parse(JSON.stringify(stack)));
 
     } else if (lowerCasedTagName === 'br') {
       if (options.start) {
